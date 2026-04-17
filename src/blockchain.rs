@@ -10,5 +10,13 @@ pub struct Blockchain {
 }
 
 impl Blockchain {
-    fn is_valid(&self) -> bool {}
+    fn new() {}
+    fn add_block() {}
+    fn is_valid(&self) -> bool {
+        true
+    }
+    fn get_balance(adress: &str) -> u64 {
+        1
+    }
+    fn add_transaction() {}
 }
