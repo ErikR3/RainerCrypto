@@ -1,3 +1,3 @@
 // Transaktionslogik
 
-struct Transaction {}
+pub struct Transaction {}
