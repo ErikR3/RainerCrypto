@@ -1,0 +1,3 @@
+// Transaktionslogik
+
+struct Transaction {}

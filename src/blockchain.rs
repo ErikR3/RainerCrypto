@@ -1,0 +1,1 @@
+// Kedjan, Validering och mining
