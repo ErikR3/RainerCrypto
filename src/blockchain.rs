@@ -13,6 +13,16 @@ impl Blockchain {
     fn new() {}
     fn add_block() {}
     fn is_valid(&self) -> bool {
+        let mut index: usize = 1;
+
+        loop {
+            if index > self.chain.len() {
+                index += 1;
+            } else {
+                break;
+            }
+        }
+
         true
     }
     fn get_balance(adress: &str) -> u64 {
