@@ -103,4 +103,8 @@ impl Block {
     pub fn transactions(&self) -> &[Transaction] {
         &self.transactions
     }
+
+    pub fn difficulty(&self) -> u32 {
+        self.difficulty
+    }
 }
