@@ -21,9 +21,12 @@ impl Blockchain {
         }
     }
     pub fn add_block(&mut self) {
+        let previous_hash = self.chain.last().unwrap().hash().to_string();
+        let transactions = self.mempool.clone();
         let index = self.chain.len() as u64;
-        let previous_hash = self.chain.last().unwrap().hash();
-        let block = Block::create_block(String::from(previous_hash), self.difficulty, index);
+
+        let block = Block::create_block(previous_hash, self.difficulty, index, transactions);
+
         self.chain.push(block);
         self.mempool.clear();
     }

@@ -1,6 +1,7 @@
 // Transaktionslogik
 use crate::utils::hash_data;
 
+#[derive(Clone)]
 pub struct Transaction {
     sender: String,
     reciever: String,

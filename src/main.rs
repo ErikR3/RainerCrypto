@@ -3,7 +3,6 @@ pub mod blockchain;
 pub mod transaction;
 pub mod utils;
 
-use crate::block::Block;
 use crate::blockchain::Blockchain;
 
 fn main() {

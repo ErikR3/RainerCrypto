@@ -35,14 +35,19 @@ impl Block {
         genesis
     }
 
-    pub fn create_block(previous_hash: String, difficulty: u32, index: u64) -> Block {
+    pub fn create_block(
+        previous_hash: String,
+        difficulty: u32,
+        index: u64,
+        transactions: Vec<Transaction>,
+    ) -> Block {
         let mut block = Block {
             index: index,
             timestamp: SystemTime::now()
                 .duration_since(UNIX_EPOCH)
                 .expect("tiden gick bakåt")
                 .as_secs(),
-            transactions: vec![],
+            transactions: transactions,
             previous_hash: previous_hash,
             nonce: 0,
             hash: String::from(""),
