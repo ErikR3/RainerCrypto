@@ -2,6 +2,7 @@
 
 use crate::block::Block;
 use crate::transaction::Transaction;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 pub struct Blockchain {
     chain: Vec<Block>,
@@ -10,23 +11,70 @@ pub struct Blockchain {
 }
 
 impl Blockchain {
-    fn new() {}
-    fn add_block() {}
-    fn is_valid(&self) -> bool {
-        let mut index: usize = 1;
+    pub fn new(difficulty: u32) -> Blockchain {
+        let genesis_block = Block::create_genesis_block(difficulty);
 
-        loop {
-            if index > self.chain.len() {
-                index += 1;
-            } else {
-                break;
+        Blockchain {
+            chain: vec![genesis_block],
+            difficulty: difficulty,
+            mempool: vec![],
+        }
+    }
+    pub fn add_block(&mut self) {
+        let index = self.chain.len() as u64;
+        let previous_hash = self.chain.last().unwrap().hash();
+        let block = Block::create_block(String::from(previous_hash), self.difficulty, index);
+        self.chain.push(block);
+        self.mempool.clear();
+    }
+    pub fn is_valid(&self) -> bool {
+        for i in 1..self.chain.len() {
+            if i < self.chain.len() {
+                let current = &self.chain[i];
+                let previous = &self.chain[i - 1];
+                if current.hash() != Block::calculate_hash(current, current.nonce()) {
+                    return false;
+                }
+                if current.previous_hash() != previous.hash() {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+
+    pub fn get_balance(&self, adress: &str) -> u64 {
+        let mut balance: u64 = 0;
+        for block in &self.chain {
+            for tx in block.transactions() {
+                if tx.reciever() == adress {
+                    balance += 1;
+                }
+                if tx.sender() == adress {
+                    balance -= 1;
+                }
             }
         }
 
-        true
+        balance
     }
-    fn get_balance(adress: &str) -> u64 {
-        1
+
+    fn add_transaction(&mut self, sender: String, reciever: String, amount: u64) {
+        if amount > 0 {
+            if sender != reciever {
+                if self.get_balance(&sender) >= amount {
+                    self.mempool
+                        .push(Transaction::new(sender, reciever, amount))
+                }
+            }
+        }
     }
-    fn add_transaction() {}
+
+    pub fn chain(&self) -> &[Block] {
+        &self.chain
+    }
+
+    pub fn mempool(&self) -> &[Transaction] {
+        &self.mempool
+    }
 }
